@@ -1,0 +1,55 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+from mpl_toolkits.mplot3d import Axes3D
+
+# Dados simulados com base nas informações fornecidas
+data = {
+    'Período': ['1990-1992', '1992-1994', '1994-2002', '2003-2010', '2011-2016', '2016-2018', '2018-2022'],
+    'Governos': ['Collor', 'Itamar Franco', 'FHC', 'Lula 1 e 2', 'Dilma', 'Temer', 'Bolsonaro'],
+    'PIB_Brasil': [-3.7, 6.14, 20.0, 43.0, 0.0, 3.0, 3.0],
+    'PIB_Mundial': [4.7, 12.5, 32.0, 34.0, 25.0, 25.0, 25.0]
+}
+
+df = pd.DataFrame(data)
+
+# Gráfico de Barras Comparando PIB do Brasil e Mundial
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Período', y='PIB_Brasil', data=df, color='b', label='PIB Brasil')
+sns.barplot(x='Período', y='PIB_Mundial', data=df, color='r', alpha=0.5, label='PIB Mundial')
+plt.xlabel('Período')
+plt.ylabel('Crescimento do PIB (%)')
+plt.title('Crescimento do PIB do Brasil vs. Mundial por Período')
+plt.legend()
+plt.show()
+
+# Gráfico de Linhas Comparando PIB do Brasil e Mundial
+plt.figure(figsize=(10, 6))
+plt.plot(df['Período'], df['PIB_Brasil'], marker='o', label='PIB Brasil')
+plt.plot(df['Período'], df['PIB_Mundial'], marker='o', label='PIB Mundial', linestyle='--')
+plt.xlabel('Período')
+plt.ylabel('Crescimento do PIB (%)')
+plt.title('Crescimento do PIB do Brasil vs. Mundial por Período')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Gráfico 3D
+fig = plt.figure(figsize=(10, 6))
+ax = fig.add_subplot(111, projection='3d')
+ax.bar(df['Período'], df['PIB_Brasil'], zs=0, zdir='y', color='b', alpha=0.8)
+ax.bar(df['Período'], df['PIB_Mundial'], zs=1, zdir='y', color='r', alpha=0.5)
+ax.set_xlabel('Período')
+ax.set_ylabel('Categoria')
+ax.set_zlabel('Crescimento do PIB (%)')
+ax.set_yticks([0, 1])
+ax.set_yticklabels(['Brasil', 'Mundial'])
+plt.title('Crescimento do PIB do Brasil vs. Mundial em 3D')
+plt.show()
+
+# Gráfico Interativo com Plotly
+fig = px.line(df, x='Período', y=['PIB_Brasil', 'PIB_Mundial'], 
+              labels={'value': 'Crescimento do PIB (%)', 'variable': 'Categoria'},
+              title='Crescimento do PIB do Brasil vs. Mundial por Período')
+fig.show()
